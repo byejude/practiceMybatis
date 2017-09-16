@@ -2,7 +2,9 @@ package com.test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.pojo.Category;
 import org.apache.ibatis.io.Resources;
@@ -17,32 +19,46 @@ public class TestMybatis {
 
     public static void main(String[]args) throws IOException{
         SqlSession session =  sessionInit();
-        Category c= new Category();
-        c.setName("new category");
-        System.out.println("*******insert test********");
-        insert(session,c);
-        list(session);
-        session.commit();
+//        Category c= new Category();
+//        c.setName("new category");
+//        System.out.println("*******insert test********");
+//        insert(session,c);
+//        list(session);
+//        session.commit();
+//
+//
+//        System.out.println("*******delete test********");
+//        delete(session,3);
+//        list(session);
+//        session.commit();
+//
+//        System.out.println("*******selectone test********");
+//        System.out .print(selectOne(session,4).getName());
+//
+//
+//        System.out.println("*******update test********");
+//        Category c1 = selectOne(session,2);
+//        c1.setName("nameupdated");
+//        update(session,c1);
+//        list(session);
+//        session.commit();
+//        session.close();
 
+//         System.out.println("******blur select test******");
+//          List<Category>cs =  selectByName(session,"Cat");
+//        for (Category c:cs) {
+//            System.out.println(c.getName());
+//        }
+//          session.commit();
+//          session.close();
+//    }
 
-        System.out.println("*******delete test********");
-        delete(session,3);
-        list(session);
-        session.commit();
-
-        System.out.println("*******selectone test********");
-        System.out .print(selectOne(session,4).getName());
-
-
-        System.out.println("*******update test********");
-        Category c1 = selectOne(session,2);
-        c1.setName("nameupdated");
-        update(session,c1);
-        list(session);
-        session.commit();
-        session.close();
-
-
+      List<Category>cs =  selectByNameAndId(session,1,"cat");
+        for (Category c:cs) {
+            System.out.println(c.getName());
+        }
+          session.commit();
+          session.close();
     }
 
 
@@ -83,5 +99,18 @@ public class TestMybatis {
     public static void update(SqlSession session,Category category ){
 
         session.update("updateCategory",category);
+    }
+
+    public static List<Category> selectByName(SqlSession session,String name){
+        return session.selectList("listCategoryByName",name);
+
+    }
+
+    public static List<Category> selectByNameAndId(SqlSession session,int id,String name){
+        Map<String,Object> args= new HashMap<>();
+        args.put("id",id);
+        args.put("name",name);
+       return session.selectList("listCategoryByNameAndId",args);
+
     }
 }
