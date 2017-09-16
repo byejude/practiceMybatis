@@ -16,15 +16,72 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 public class TestMybatis {
 
     public static void main(String[]args) throws IOException{
+        SqlSession session =  sessionInit();
+        Category c= new Category();
+        c.setName("new category");
+        System.out.println("*******insert test********");
+        insert(session,c);
+        list(session);
+        session.commit();
+
+
+        System.out.println("*******delete test********");
+        delete(session,3);
+        list(session);
+        session.commit();
+
+        System.out.println("*******selectone test********");
+        System.out .print(selectOne(session,4).getName());
+
+
+        System.out.println("*******update test********");
+        Category c1 = selectOne(session,2);
+        c1.setName("nameupdated");
+        update(session,c1);
+        list(session);
+        session.commit();
+        session.close();
+
+
+    }
+
+
+    public static SqlSession sessionInit() throws  IOException{
         String source = "resource/mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(source);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession session =  sqlSessionFactory.openSession();
-        List<Category>cs = session.selectList("listCategory");
-        for(Category c :cs){
-            System.out.println(c.getName());
+        return  session;
+
+    }
+
+    public static void insert(SqlSession session,Category category){
+                  session.insert("addCategory",category);
 
 
-        }
+    }
+
+    public static void list(SqlSession session){
+
+            List<Category>cs = session.selectList("listCategory");
+            for(Category c :cs){
+                System.out.println(c.getName());
+            }
+
+    }
+
+    public static void delete(SqlSession session,int id ){
+            session.delete("deleteCategory",id);
+    }
+
+
+    public static Category selectOne(SqlSession session,int id){
+        return  session.selectOne("getCategory",id);
+    }
+
+
+    public static void update(SqlSession session,Category category ){
+
+        session.update("updateCategory",category);
     }
 }
