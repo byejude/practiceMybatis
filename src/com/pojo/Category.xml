@@ -4,33 +4,51 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.pojo">
-    <select id="listCategory" resultType="Category">
-        select * from   category_
+    <resultMap type="Category" id="categoryBean">
+        <id column="cid" property="id" />
+        <result column="cname" property="name" />
+
+        <!-- 一对多的关系 -->
+        <!-- property: 指的是集合属性的值, ofType：指的是集合中元素的类型 -->
+        <collection property="products" ofType="Product">
+            <id column="pid" property="id" />
+            <result column="pname" property="name" />
+            <result column="price" property="price" />
+        </collection>
+    </resultMap>
+
+    <!-- 关联查询分类和产品表  Category的id 字段 和Product的id字段同名，Mybatis不知道谁是谁的，所以需要通过取别名cid,pid来区分。
+name字段同理。-->
+    <select id="listCategory" resultMap="categoryBean">
+        select c.*, p.*, c.id 'cid', p.id 'pid', c.name 'cname', p.name 'pname' from category_ c left join product_ p on c.id = p.cid
     </select>
+    <!--<select id="listCategory" resultType="Category">-->
+        <!--select * from   category_-->
+    <!--</select>-->
 
-    <insert id="addCategory" parameterType="Category" >
-        insert into category_ ( name ) values (#{name})
-    </insert>
+    <!--<insert id="addCategory" parameterType="Category" >-->
+        <!--insert into category_ ( name ) values (#{name})-->
+    <!--</insert>-->
 
-    <delete id="deleteCategory" parameterType="_int" >
-        delete from category_ where id= #{id}
-    </delete>
+    <!--<delete id="deleteCategory" parameterType="_int" >-->
+        <!--delete from category_ where id= #{id}-->
+    <!--</delete>-->
 
-    <select id="getCategory" parameterType="_int" resultType="Category">
-        select * from   category_  where id= #{id}
-    </select>
+    <!--<select id="getCategory" parameterType="_int" resultType="Category">-->
+        <!--select * from   category_  where id= #{id}-->
+    <!--</select>-->
 
-    <update id="updateCategory" parameterType="Category" >
-        update category_ set name=#{name} where id=#{id}
-    </update>
+    <!--<update id="updateCategory" parameterType="Category" >-->
+        <!--update category_ set name=#{name} where id=#{id}-->
+    <!--</update>-->
 
-<!--模糊查询-->
-    <select id="listCategoryByName"  parameterType="string" resultType="Category">
-        select * from   category_  where name like concat('%',#{0},'%')
-    </select>
+<!--&lt;!&ndash;模糊查询&ndash;&gt;-->
+    <!--<select id="listCategoryByName"  parameterType="string" resultType="Category">-->
+        <!--select * from   category_  where name like concat('%',#{0},'%')-->
+    <!--</select>-->
 
-    <select id="listCategoryByNameAndId" parameterType="map" resultType="Category">
-       select * from    category_  where id>#{id} and name like concat('%',#{name},'%')
-    </select>
+    <!--<select id="listCategoryByNameAndId" parameterType="map" resultType="Category">-->
+       <!--select * from    category_  where id>#{id} and name like concat('%',#{name},'%')-->
+    <!--</select>-->
 
 </mapper>

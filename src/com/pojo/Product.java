@@ -1,22 +1,13 @@
 package com.pojo;
 
-import java.util.List;
-
 /**
  * Created by byebyejude on 2017/9/16.
  */
-public class Category {
-    private int id;
+public class Product {
+
+    private  int id;
     private String name;
-    List<Product> products;
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
+    private  float price;
 
     public void setId(int id) {
         this.id = id;
@@ -26,6 +17,9 @@ public class Category {
         this.name = name;
     }
 
+    public void setPrice(float price) {
+        this.price = price;
+    }
 
     public int getId() {
         return id;
@@ -35,8 +29,12 @@ public class Category {
         return name;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
     @Override
     public String toString(){
-        return "Category [id=" + id + ", name=" + name + "]";
+         return "Product [id=" + id + ", name=" + name + ", price=" + price + "]";
     }
 }
