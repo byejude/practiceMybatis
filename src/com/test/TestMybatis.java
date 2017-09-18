@@ -18,7 +18,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 public class TestMybatis {
 
     public static void main(String[]args) throws IOException{
-        SqlSession session =  sessionInit();
+       // SqlSession session =  sessionInit();
 //        Category c= new Category();
 //        c.setName("new category");
 //        System.out.println("*******insert test********");
@@ -52,13 +52,24 @@ public class TestMybatis {
 //          session.commit();
 //          session.close();
 //    }
-
+        String source = "resource/mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(source);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        SqlSession session =  sqlSessionFactory.openSession();
       List<Category>cs =  selectByNameAndId(session,1,"cat");
         for (Category c:cs) {
             System.out.println(c.getName());
         }
           session.commit();
           session.close();
+
+        SqlSession session2 =  sqlSessionFactory.openSession();
+        List<Category>cx =  selectByNameAndId(session2,1,"cat");
+        for (Category c:cx) {
+            System.out.println(c.getName());
+        }
+        session2.commit();
+        session2.close();
     }
 
 

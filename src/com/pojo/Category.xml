@@ -19,6 +19,8 @@
 
     <!-- 关联查询分类和产品表  Category的id 字段 和Product的id字段同名，Mybatis不知道谁是谁的，所以需要通过取别名cid,pid来区分。
 name字段同理。-->
+    <!--新增<cache/>以启动对Category对象的二级缓存-->
+    <cache/>
     <select id="listCategory" resultMap="categoryBean">
         select c.*, p.*, c.id 'cid', p.id 'pid', c.name 'cname', p.name 'pname' from category_ c left join product_ p on c.id = p.cid
     </select>
@@ -47,9 +49,9 @@ name字段同理。-->
         <!--select * from   category_  where name like concat('%',#{0},'%')-->
     <!--</select>-->
 
-    <!--<select id="listCategoryByNameAndId" parameterType="map" resultType="Category">-->
-       <!--select * from    category_  where id>#{id} and name like concat('%',#{name},'%')-->
-    <!--</select>-->
+    <select id="listCategoryByNameAndId" parameterType="map" resultType="Category">
+       select * from    category_  where id>#{id} and name like concat('%',#{name},'%')
+    </select>
 
 </mapper>
 
