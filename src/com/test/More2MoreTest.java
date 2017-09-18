@@ -24,7 +24,7 @@ public class More2MoreTest {
 
      //  addOrderItem(session);
        //deleteOderItem(session);
-     deleteWholeOrder(session,1);
+     //deleteWholeOrder(session,1);
         listOrder(session);
 
     }
